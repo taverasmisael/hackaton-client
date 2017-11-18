@@ -11,3 +11,7 @@ html {
   font-family: Roboto;
   color: #323232;
 }
+
+small {
+  font-size: 0.75em;
+}

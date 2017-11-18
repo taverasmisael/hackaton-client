@@ -6,7 +6,7 @@ export const LoadMarkers = async filter => {
         filter_by_id: filter
       }
     })
-    return response
+    return response.data
   } catch (err) {
     throw err
   }
