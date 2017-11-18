@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import PrivateRoute from '@components/PrivateRoute'
+
 import './index.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -15,7 +17,7 @@ ReactDOM.render(
   <Router>
     <div>
       <Route exact path="/login" component={Login} />
-      <Route exact path="/map" component={App} />
+      <PrivateRoute exact path="/map" component={App} />
       <Route exact path="/" component={SplashScreen} />
     </div>
   </Router>,

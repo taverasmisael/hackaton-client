@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react'
+import { Redirect } from 'react-router-dom'
 import Input from '@components/Input'
 
-import { ProcessLogin } from '@services/auth'
+import { ProcessLogin, SaveUser, IsAuthorized } from '@services/auth'
 export default class Login extends PureComponent {
   state = {
     credentials: {
       cedula: '',
       password: ''
-    }
+    },
+    isAuthenticated: false
   }
 
   onChangeInput = key => ({ target: { value } }) =>
@@ -23,15 +25,27 @@ export default class Login extends PureComponent {
     event.preventDefault()
     const { credentials } = this.state
     ProcessLogin(credentials)
-      .then(() => {
-        console.log('Success!')
+      .then(userdata => {
+        SaveUser(userdata)
+        this.setState({
+          isAuthenticated: true
+        })
       })
       .catch(err => console.error('ERROR', err))
   }
+
+  componentDidMount() {
+    this.setState({
+      isAuthenticated: IsAuthorized()
+    })
+  }
+
   render() {
-    const { credentials } = this.state
+    const { credentials, isAuthenticated } = this.state
     const { onChangeInput, onSubmit } = this
-    return (
+    return isAuthenticated ? (
+      <Redirect to="/map" />
+    ) : (
       <section>
         <form onSubmit={onSubmit}>
           <Input
