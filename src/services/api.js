@@ -1,10 +1,21 @@
-
-const APIURL = 'http://10.193.0.79:8888'
+import { get, post } from 'axios'
 export const LoadMarkers = async () => {
   try {
-    const response = await fetch(`${APIURL}/map`)
-    const data = await response.json()
-    return data
+    const response = await get(`map`)
+    return response
+  } catch (err) {
+    throw err
+  }
+}
+
+export const ProcessLogin = async ({ cedula, password }) => {
+  try {
+    const body = new FormData()
+    body.append('cedula', cedula)
+    body.append('password', password)
+
+    const response = await post(`/police/login`, body)
+    return response
   } catch (err) {
     throw err
   }
