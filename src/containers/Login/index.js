@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import Input from '@components/Input'
 
-import { ProcessLogin } from '@services/api'
+import { ProcessLogin } from '@services/auth'
 export default class Login extends PureComponent {
   state = {
     credentials: {
