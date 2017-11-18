@@ -4,7 +4,7 @@ import MapGL, { Marker, Popup } from 'react-map-gl'
 import CityPin from '@components/CityPin'
 import LabelInfo from '@components/LabelInfo'
 
-import { LoadMarkers } from '@services/api'
+import { LoadMarkers, FiltersCode } from '@services/api'
 
 const TOKEN = 'pk.eyJ1IjoidGF2ZXJhc21pc2FlbCIsImEiOiJjamEzenBlcjM5dTFiMzNsZ2JhcWhrYmU0In0.2cYJYBYpTYmYI75TXuc_yA' // Set your mapbox token here
 
@@ -20,7 +20,8 @@ class App extends Component {
       height: 500
     },
     popupInfo: null,
-    locations: []
+    locations: [],
+    currentFilter: FiltersCode.OUTDATED
   }
   componentDidMount() {
     window.addEventListener('resize', this.resize)
@@ -36,7 +37,7 @@ class App extends Component {
         }
       }))
     })
-    LoadMarkers()
+    LoadMarkers(FiltersCode.OUTDATED)
       .then(locations => this.setState({ locations }))
       .catch(err => {
         console.error('ERROR LOADING MARKERS: ', err)
