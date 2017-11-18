@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 
 const FormInput = styled.div`width: 100%;`
 
-const Input = ({ id, onChange, value, type, label }) => (
+const Input = ({ id, onChange, value, type = 'text', label }) => (
   <FormInput>
-    <label for={id}>{label}</label>
+    <label htmlFor={id}>{label}</label>
     <input id={id} type={type} value={value} onChange={onChange} />
   </FormInput>
 )
