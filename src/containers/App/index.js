@@ -3,8 +3,17 @@ import MapGL, { Marker } from 'react-map-gl'
 
 import CityPin from '@components/CityPin'
 import LabelInfo from '@components/LabelInfo'
+import Menu from '@components/Menu'
+import MenuButton from '@components/MenuButton'
 
 import { LoadMarkers, FiltersCode } from '@services/api'
+import { GetUser } from '@services/auth'
+import { IsNightTime } from '@services/utilities'
+
+const MarkersColors = {
+  UPDATED: '#b360ff',
+  OUTDATED: '#ff6060'
+}
 
 const TOKEN =
   'pk.eyJ1IjoidGF2ZXJhc21pc2FlbCIsImEiOiJjamEzenBlcjM5dTFiMzNsZ2JhcWhrYmU0In0.2cYJYBYpTYmYI75TXuc_yA' // Set your mapbox token here
@@ -22,8 +31,9 @@ class App extends PureComponent {
     },
     popupInfo: null,
     locations: [],
-    currentFilter: FiltersCode.OUTDATED,
-    currentTheme: new Date().getHours() ? 'streets' : 'dark'
+    currentFilter: FiltersCode.ALL,
+    currentTheme: IsNightTime() ? 'dark' : 'streets',
+    isMenuOpen: false
   }
   componentDidMount() {
     window.addEventListener('resize', this.resize)
@@ -36,7 +46,8 @@ class App extends PureComponent {
           ...state.viewport,
           longitude,
           latitude
-        }
+        },
+        currentUser: GetUser()
       }))
     })
     this.updateMap(this.state.currentFilter)
@@ -48,33 +59,17 @@ class App extends PureComponent {
         const locations = markers.map(m => ({
           id: m.id,
           latitude: +m.latitude,
-          longitude: +m.longitude
+          longitude: +m.longitude,
+          color: m.active ? MarkersColors.UPDATED : MarkersColors.OUTDATED
         }))
         this.setState({
           locations: [
             ...locations,
             { id: 3124231, latitude: 18.482279, longitude: -69.95643040000002, color: '#4267b2' }
           ],
-          markers: [
-            ...markers,
-            {
-              id: 3124231,
-              vehicle_model: 'Lamborgini Aventador 2015',
-              marbete: '551FASD886ASDF1330',
-              user_name: 'PornoTentacion',
-              user_img:
-                'https://www.designboom.com/wp-content/uploads/2016/07/patricia-piccinini-graham-transport-accident-commission-designboom-1800.jpg',
-              email: 'jmrv002@gmail.com',
-              password: '81dc9bdb52d04dc20036dbd8313ed055',
-              color: 'Rojo',
-              matricula: 'EFASDFZXCVZ149498498496',
-              active: 0,
-              latitude: '0',
-              longitude: '0'
-            }
-          ]
+          markers
         })
-        // requestAnimationFrame(this.updateMap.bind(this, this.state.currentFilter))
+        requestAnimationFrame(this.updateMap.bind(this, this.state.currentFilter))
       })
       .catch(err => {
         console.error('ERROR LOADING MARKERS: ', err)
@@ -101,19 +96,40 @@ class App extends PureComponent {
   updateViewport = viewport => {
     this.setState({ viewport })
   }
+
+  onSelectFilter = currentFilter => () => this.setState({ currentFilter, isMenuOpen: false })
+
+  openMenu = () => this.setState(state => ({ ...state, isMenuOpen: !state.isMenuOpen }))
   render() {
-    const { viewport, locations, popupInfo, currentTheme } = this.state
+    const {
+      viewport,
+      currentUser,
+      locations,
+      popupInfo,
+      currentTheme,
+      currentFilter,
+      isMenuOpen
+    } = this.state
     return (
-      <MapGL
-        {...viewport}
-        onClick={() => this.setState({ popupInfo: null })}
-        onViewportChange={this.updateViewport}
-        mapStyle={`mapbox://styles/mapbox/${currentTheme}-v9`}
-        mapboxApiAccessToken={TOKEN}
-      >
-        {locations.map(this.renderCityMarker)}
-        <LabelInfo info={popupInfo || {}} visible={!!popupInfo} />
-      </MapGL>
+      <div>
+        <MapGL
+          {...viewport}
+          onClick={() => this.setState({ popupInfo: null })}
+          onViewportChange={this.updateViewport}
+          mapStyle={`mapbox://styles/mapbox/${currentTheme}-v9`}
+          mapboxApiAccessToken={TOKEN}
+        >
+          {locations.map(this.renderCityMarker)}
+          <LabelInfo info={popupInfo || {}} visible={!!popupInfo} />
+        </MapGL>
+        <MenuButton onClick={this.openMenu} isOpen={isMenuOpen} />
+        <Menu
+          userinfo={currentUser}
+          currentFilter={currentFilter}
+          show={isMenuOpen}
+          onSelectFilter={this.onSelectFilter}
+        />
+      </div>
     )
   }
 }

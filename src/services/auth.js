@@ -20,3 +20,5 @@ export const IsAuthorized = () => !!Storage.get('user')
 export const SaveUser = userinfo => {
   Storage.set('user', userinfo)
 }
+
+export const GetUser = () => Storage.get('user')
