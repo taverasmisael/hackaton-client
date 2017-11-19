@@ -5,6 +5,7 @@ import CityPin from '@components/CityPin'
 import LabelInfo from '@components/LabelInfo'
 import UserMenu from '@components/UserMenu'
 import MenuButton from '@components/MenuButton'
+import Payment from '@components/Payment'
 
 import { GetMyCar } from '@services/api'
 import { GetUser } from '@services/auth'
@@ -24,6 +25,7 @@ class User extends PureComponent {
       height: 500
     },
     popupInfo: null,
+    isPaymentOpen: false,
     currentTheme: 'streets', //IsNightTime() ? 'dark' : 'streets',
     isMenuOpen: true
   }
@@ -70,7 +72,8 @@ class User extends PureComponent {
   }
 
   openMenu = () => this.setState(state => ({ ...state, isMenuOpen: !state.isMenuOpen }))
-  openPaymants = () => alert('clicked openPaymants')
+  togglePaymanets = () =>
+    this.setState(state => ({ ...state, isPaymentOpen: !state.isPaymentOpen }))
   findMyCar = () => {
     console.log(this.state.currentUser.id)
     GetMyCar(this.state.currentUser.id)
@@ -106,7 +109,8 @@ class User extends PureComponent {
       myLocation,
       popupInfo,
       currentTheme,
-      isMenuOpen
+      isMenuOpen,
+      isPaymentOpen
     } = this.state
     return (
       <div>
@@ -125,8 +129,14 @@ class User extends PureComponent {
         <UserMenu
           userinfo={currentUser}
           show={isMenuOpen}
-          primaryAction={this.openPaymants}
+          onClose={this.togglePaymanets}
+          primaryAction={this.togglePaymanets}
           secondaryAction={this.findMyCar}
+        />
+        <Payment
+          show={isPaymentOpen}
+          onClose={this.togglePaymanets}
+          payments={[{ name: 'Pedro Gonzales', card: 'xxxxxxxxxxxx3659' }]}
         />
       </div>
     )
