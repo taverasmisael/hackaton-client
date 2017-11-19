@@ -4,9 +4,11 @@
   margin: 0;
   outline: 0;
 }
-
-html {
+:root {
+  --dark-app-color: #4b4668;
   --main-app-color: #7f6;
+}
+html {
   font-size: 18px;
   font-family: Roboto;
   color: #323232;
@@ -14,4 +16,17 @@ html {
 
 small {
   font-size: 0.75em;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
