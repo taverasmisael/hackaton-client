@@ -32,8 +32,8 @@ class App extends PureComponent {
     popupInfo: null,
     locations: [],
     currentFilter: FiltersCode.ALL,
-    currentTheme: IsNightTime() ? 'dark' : 'streets',
-    isMenuOpen: false
+    currentTheme: 'streets',//IsNightTime() ? 'dark' : 'streets',
+    isMenuOpen: true
   }
   componentDidMount() {
     window.addEventListener('resize', this.resize)

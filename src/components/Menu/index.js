@@ -8,7 +8,7 @@ import UserInfo from '@components/UserInfo'
 
 const StyledFilter = styled.div`
   align-items: center;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   bottom: ${({ show }) => (show ? '0' : '100%')};
   display: flex;
   flex-direction: column;
