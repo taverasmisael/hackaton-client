@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 import PrivateRoute from '@components/PrivateRoute'
 
@@ -16,7 +16,7 @@ import registerServiceWorker from './registerServiceWorker'
 ReactDOM.render(
   <Router>
     <div>
-      <Route exact path="/" component={Login} />
+      <Route exact path="/" component={() => <Redirect to="/login" />} />
       <Route exact path="/login" component={Login} />
       <PrivateRoute exact path="/map" component={App} />
       <PrivateRoute exact path="/user" component={User} />

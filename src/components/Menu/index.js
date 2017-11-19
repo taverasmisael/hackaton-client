@@ -39,7 +39,7 @@ const Option = styled.li`
   align-items: center;
   cursor: pointer;
   display: flex;
-  flex: 1 0 25%;
+  flex: 1 0 33%;
   flex-flow: column nowrap;
   justify-content: center;
   margin: 0 0.75rem;

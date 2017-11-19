@@ -23,3 +23,8 @@ export const SaveUser = userinfo => {
 }
 
 export const GetUser = () => Storage.get('user')
+
+export const LogOut = () => {
+  Storage.remove('user')
+  window.location = '/'
+}

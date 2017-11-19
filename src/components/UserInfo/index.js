@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import Input from '@components/Input'
+import {LogOut} from '@services/auth'
 
 const INTIALSTATE = {
   editingPassword: false,
@@ -105,6 +106,12 @@ class UserInfo extends PureComponent {
               this.setState(state => ({ ...state, editingPassword: !state.editingPassword }))}
           >
             Cambiar contraseña
+          </Button>
+          <Button
+            type="button"
+            onClick={() => LogOut()}
+          >
+            Cerrar Session
           </Button>
         </small>
         <Form onSubmit={this.onUpdatePassword}>
