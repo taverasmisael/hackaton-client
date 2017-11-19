@@ -18,17 +18,16 @@ const Button = styled.button`
   cursor: pointer;
   display: inline-block;
   padding: 0.75em 1em;
-  transition: background 450ms ease;
-
-  &:hover {
-    background: #312e42;
+  position: relative;
+  :hover {
+    text-decoration: underline;
   }
 `
 
 const StyledUserInfo = styled.div`
-  background: var(--dark-app-color, red);
-  bottom: ${({showPasswordForm}) => showPasswordForm ? '0' : '-15%'};
-  color: #fff;
+  background: white;
+  bottom: ${({ showPasswordForm }) => (showPasswordForm ? '0' : '-15%')};
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 5px;
   left: 25%;
   position: absolute;
   text-align: center;
@@ -36,16 +35,26 @@ const StyledUserInfo = styled.div`
   width: 50%;
 
   .UserName {
-    margin-bottom: 0.5em;
+    margin-top: 1.5rem;
+    line-height: 1;
+    margin-bottom: 0;
   }
 `
 
 const Form = styled.form`
   display: grid;
-  grid-template-columns: repeat(3, 1fr) 15%;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 1em;
   padding: 1.5rem;
   width: 100%;
+  input {
+    border-radius: 0;
+    background: rgba(75, 70, 104, 0.2);
+    color: #4b4668;
+    padding: 0.5rem;
+    width: 100%;
+    border: 0;
+  }
   .btns {
     display: flex;
     align-items: flex-end;
@@ -89,7 +98,13 @@ class UserInfo extends PureComponent {
           <small>{info.cedula}</small>
         </h4>
         <small>
-          <Button type="button" onClick={() => this.setState({ editingPassword: true   })}>Cambiar contraseña</Button>
+          <Button
+            type="button"
+            onClick={() =>
+              this.setState(state => ({ ...state, editingPassword: !state.editingPassword }))}
+          >
+            Cambiar contraseña
+          </Button>
         </small>
         <Form onSubmit={this.onUpdatePassword}>
           <Input
@@ -116,20 +131,6 @@ class UserInfo extends PureComponent {
             value={this.state.newPasswordConfirm}
             onChange={this.onInputChange('newPasswordConfirm')}
           />
-          <div className="btns">
-            <button
-              className="btn"
-              type="reset"
-              title="Cancelar"
-              aria-label="Cancelar"
-              onClick={this.onUpdatePassword}
-            >
-              Cancelar
-            </button>
-            <button className="btn" type="submit" title="Guardar" aria-label="Guardar">
-              Guardar
-            </button>
-          </div>
         </Form>
       </StyledUserInfo>
     )

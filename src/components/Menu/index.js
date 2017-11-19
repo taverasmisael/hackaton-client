@@ -6,6 +6,10 @@ import { FiltersCode } from '@services/api'
 
 import UserInfo from '@components/UserInfo'
 
+import AllIcon from '../../assets/Todos@300x.png'
+import OutdatedIcon from '../../assets/Moroso@300x.png'
+import UpdatedIcon from '../../assets/Al dia @300x.png'
+
 const StyledFilter = styled.div`
   align-items: center;
   background: rgba(255, 255, 255, 0.8);
@@ -41,6 +45,9 @@ const Option = styled.li`
   margin: 0 0.75rem;
   padding: 1.5rem;
   text-align: center;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 5px;
+  border-radius: .5rem;
 
   .icon {
     --icon-size: 8em;
@@ -58,29 +65,17 @@ const Option = styled.li`
 const Menu = ({ onSelectFilter, currentFilter, show, onMenuClick, userinfo }) => (
   <StyledFilter show={show}>
     <Options show={show}>
-      <Option onClick={onSelectFilter(FiltersCode.ALL)}>
-        <img
-          src="https://lh3.ggpht.com/2zNe_jxhlnO25cmRq8k_udYa9jB5_En37v76oB27dYJrr9veXhGf6A1ih-l4Glqjo0SQ=w300"
-          alt=""
-          className="icon"
-        />
-        <span className="text">Todos</span>
+      <Option onClick={onSelectFilter(FiltersCode.UPDATED)}>
+        <img src={UpdatedIcon} alt="" className="icon" />
+        <span className="text">Al Día</span>
       </Option>
       <Option onClick={onSelectFilter(FiltersCode.OUTDATED)}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Circle-icons-camera.svg/1024px-Circle-icons-camera.svg.png"
-          alt=""
-          className="icon"
-        />
+        <img src={OutdatedIcon} alt="" className="icon" />
         <span className="text">Vencidos</span>
       </Option>
-      <Option onClick={onSelectFilter(FiltersCode.UPDATED)}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Circle-icons-weather.svg/1024px-Circle-icons-weather.svg.png"
-          alt=""
-          className="icon"
-        />
-        <span className="text">Al Día</span>
+      <Option onClick={onSelectFilter(FiltersCode.ALL)}>
+        <img src={AllIcon} alt="" className="icon" />
+        <span className="text">Todos</span>
       </Option>
     </Options>
     <UserInfo info={userinfo} />
