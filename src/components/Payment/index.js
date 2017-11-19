@@ -47,22 +47,25 @@ const Button = styled.button`
   text-transform: uppercase;
   width: 50%;
   color: #393d69;
+  :hover {
+    background: #f5f5f5;
+  }
 `
 
-const Payment = ({ show, payments, onAddCard, onClose }) => (
+const Payment = ({ show, payments, onAddCard, onClose, visibleAddCard, toggleVisibleAddCard }) => (
   <StyledPayment show={show}>
     <GoBackButton onClick={onClose} />
     <div>
       {renderPayments(payments)}
-      <Button>Añadir metodo</Button>
+      <Button onClick={toggleVisibleAddCard}>Añadir metodo</Button>
     </div>
-    <AddCard onSubmit={onAddCard} />
+    <AddCard show={visibleAddCard} onClose={toggleVisibleAddCard} onSubmit={onAddCard} />
   </StyledPayment>
 )
 
 const renderPayments = payments =>
-  payments.map(payment => (
-    <PaymentMethod>
+  payments.map((payment, ix) => (
+    <PaymentMethod key={ix}>
       <h4>{payment.name}</h4>
       <p>{payment.card}</p>
     </PaymentMethod>

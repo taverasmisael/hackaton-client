@@ -27,7 +27,8 @@ class User extends PureComponent {
     popupInfo: null,
     isPaymentOpen: false,
     currentTheme: 'streets', //IsNightTime() ? 'dark' : 'streets',
-    isMenuOpen: true
+    isMenuOpen: true,
+    isNewCardOpen: false
   }
   componentDidMount() {
     window.addEventListener('resize', this.resize)
@@ -74,6 +75,8 @@ class User extends PureComponent {
   openMenu = () => this.setState(state => ({ ...state, isMenuOpen: !state.isMenuOpen }))
   togglePaymanets = () =>
     this.setState(state => ({ ...state, isPaymentOpen: !state.isPaymentOpen }))
+  toggleVisibleAddCard = () =>
+    this.setState(state => ({ ...state, isNewCardOpen: !state.isNewCardOpen }))
   findMyCar = () => {
     console.log(this.state.currentUser.id)
     GetMyCar(this.state.currentUser.id)
@@ -101,6 +104,9 @@ class User extends PureComponent {
       })
       .catch(console.error.bind(console))
   }
+
+  onAddCard = cardinfo =>
+    this.setState(state => ({ ...state, payments: [...state.payments, cardinfo] }))
   render() {
     const {
       viewport,
@@ -110,7 +116,8 @@ class User extends PureComponent {
       popupInfo,
       currentTheme,
       isMenuOpen,
-      isPaymentOpen
+      isPaymentOpen,
+      isNewCardOpen
     } = this.state
     return (
       <div>
@@ -136,6 +143,9 @@ class User extends PureComponent {
         <Payment
           show={isPaymentOpen}
           onClose={this.togglePaymanets}
+          toggleVisibleAddCard={this.toggleVisibleAddCard}
+          visibleAddCard={isNewCardOpen}
+          onAddCard={this.onAddCard}
           payments={[{ name: 'Pedro Gonzales', card: 'xxxxxxxxxxxx3659' }]}
         />
       </div>

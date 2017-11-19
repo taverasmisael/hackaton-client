@@ -16,6 +16,7 @@ import registerServiceWorker from './registerServiceWorker'
 ReactDOM.render(
   <Router>
     <div>
+      <Route exact path="/" component={Login} />
       <Route exact path="/login" component={Login} />
       <PrivateRoute exact path="/map" component={App} />
       <PrivateRoute exact path="/user" component={User} />
