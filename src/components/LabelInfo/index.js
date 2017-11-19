@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
+import UpdatedIcon from '../../assets/marc verde@300x.png'
+import OutdatedIcon from '../../assets/marc rojo@300x.png'
+
 const MarkersColors = {
   UPDATED: '#6cffc0',
   OUTDATED: '#ff6060'
 }
+
+const Icons = [OutdatedIcon, UpdatedIcon]
 
 const StyledLabel = styled.div`
   background: ${({ updated }) => (updated ? MarkersColors.UPDATED : MarkersColors.OUTDATED)};
@@ -13,7 +18,7 @@ const StyledLabel = styled.div`
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12), 0 3px 4px rgba(0, 0, 0, 0.24);
   display: grid;
   grid-gap: 1.5rem;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
   left: 0;
   padding: 1em;
   position: fixed;
@@ -26,7 +31,7 @@ const StyledLabel = styled.div`
   }
 
   .label__name {
-    text-align: center;
+    text-align: left;
     align-self: center;
   }
 
@@ -34,6 +39,12 @@ const StyledLabel = styled.div`
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 0.75rem;
+  }
+  .iconHolder {
+    text-align: center;
+  }
+  .iconHolder img {
+    width: 4rem;
   }
 `
 export default class LabelInfo extends PureComponent {
@@ -61,6 +72,9 @@ export default class LabelInfo extends PureComponent {
             <strong>Matricula:</strong> {matricula}
           </small>
         </p>
+        <div className="iconHolder">
+          <img src={Icons[active]} alt="" />
+        </div>
       </StyledLabel>
     )
   }

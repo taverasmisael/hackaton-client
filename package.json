@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://10.221.12.25:8888",
+  "homepage": "https://taverasmisael.github.io//hackaton-client",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "axios": "^0.17.1",
@@ -53,6 +54,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },

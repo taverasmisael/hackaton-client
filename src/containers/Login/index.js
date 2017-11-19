@@ -66,7 +66,7 @@ const Form = styled.form`
   background: rgba(139, 150, 255, 0.61);
   border-radius: 1.2em;
   padding: 4rem 1.5rem;
-  width: 70%;
+  width: 80%;
   grid-area: log;
   margin: 0 auto;
   .container {

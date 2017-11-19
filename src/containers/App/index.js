@@ -30,7 +30,7 @@ class App extends PureComponent {
     },
     popupInfo: null,
     locations: [],
-    currentFilter: FiltersCode.ALL,
+    currentFilter: FiltersCode.OUTDATED,
     currentTheme: 'streets',//IsNightTime() ? 'dark' : 'streets',
     isMenuOpen: false
   }
