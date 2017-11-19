@@ -11,7 +11,7 @@ import { GetUser } from '@services/auth'
 import { IsNightTime } from '@services/utilities'
 
 const MarkersColors = {
-  UPDATED: '#b360ff',
+  UPDATED: '#6cffc0',
   OUTDATED: '#ff6060'
 }
 
@@ -65,7 +65,7 @@ class App extends PureComponent {
         this.setState({
           locations: [
             ...locations,
-            { id: 3124231, latitude: 18.482279, longitude: -69.95643040000002, color: '#4267b2' }
+            { id: 3124231, latitude: 18.482279, longitude: -69.95643040000002, color: '#b360ff' }
           ],
           markers
         })
