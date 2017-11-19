@@ -1,23 +1,18 @@
 import React, { PureComponent } from 'react'
-import MapGL, { Marker } from 'react-map-gl'
+import MapGL, { Marker, experimental } from 'react-map-gl'
 
 import CityPin from '@components/CityPin'
 import LabelInfo from '@components/LabelInfo'
-import Menu from '@components/Menu'
+import UserMenu from '@components/UserMenu'
 import MenuButton from '@components/MenuButton'
 
-import { LoadMarkers, FiltersCode } from '@services/api'
+import { GetMyCar } from '@services/api'
 import { GetUser } from '@services/auth'
-
-const MarkersColors = {
-  UPDATED: '#6cffc0',
-  OUTDATED: '#ff6060'
-}
 
 const TOKEN =
   'pk.eyJ1IjoidGF2ZXJhc21pc2FlbCIsImEiOiJjamEzenBlcjM5dTFiMzNsZ2JhcWhrYmU0In0.2cYJYBYpTYmYI75TXuc_yA' // Set your mapbox token here
 
-class App extends PureComponent {
+class User extends PureComponent {
   state = {
     viewport: {
       latitude: 18.4708059,
@@ -29,10 +24,8 @@ class App extends PureComponent {
       height: 500
     },
     popupInfo: null,
-    locations: [],
-    currentFilter: FiltersCode.ALL,
-    currentTheme: 'streets',//IsNightTime() ? 'dark' : 'streets',
-    isMenuOpen: false
+    currentTheme: 'streets', //IsNightTime() ? 'dark' : 'streets',
+    isMenuOpen: true
   }
   componentDidMount() {
     window.addEventListener('resize', this.resize)
@@ -46,33 +39,15 @@ class App extends PureComponent {
           longitude,
           latitude
         },
+        myLocation: {
+          latitude,
+          longitude,
+          color: '#b360ff',
+          id: 16518
+        },
         currentUser: GetUser()
       }))
     })
-    this.updateMap(this.state.currentFilter)
-  }
-
-  updateMap = filter => {
-    LoadMarkers(filter)
-      .then(markers => {
-        const locations = markers.map(m => ({
-          id: m.id,
-          latitude: +m.latitude,
-          longitude: +m.longitude,
-          color: m.active ? MarkersColors.UPDATED : MarkersColors.OUTDATED
-        }))
-        this.setState({
-          locations: [
-            ...locations,
-            { id: 3124231, latitude: 18.482279, longitude: -69.95643040000002, color: '#b360ff' }
-          ],
-          markers
-        })
-        requestAnimationFrame(this.updateMap.bind(this, this.state.currentFilter))
-      })
-      .catch(err => {
-        console.error('ERROR LOADING MARKERS: ', err)
-      })
   }
   resize = () => {
     this.setState({
@@ -85,28 +60,52 @@ class App extends PureComponent {
   }
   renderCityMarker = city => {
     return (
-      <Marker key={`marker-${city.id}`} longitude={city.longitude} latitude={city.latitude}>
-        <CityPin color={city.color} size={20} onClick={this.onPinClick(city.id)} />
+      <Marker key={`marker-${city.id}`} longitude={+city.longitude} latitude={+city.latitude}>
+        <CityPin color={city.color} size={20} />
       </Marker>
     )
   }
-  onPinClick = id => () =>
-    this.setState(state => ({ ...state, popupInfo: state.markers.find(m => m.id === id) }))
   updateViewport = viewport => {
     this.setState({ viewport })
   }
 
-  onSelectFilter = currentFilter => () => this.setState({ currentFilter, isMenuOpen: false })
-
   openMenu = () => this.setState(state => ({ ...state, isMenuOpen: !state.isMenuOpen }))
+  openPaymants = () => alert('clicked openPaymants')
+  findMyCar = () => {
+    console.log(this.state.currentUser.id)
+    GetMyCar(this.state.currentUser.id)
+      .then(({ latitude, longitude }) => {
+        this.setState({ isMenuOpen: false }, () =>
+          setTimeout(() => {
+            this.setState(state => ({
+              myCar: {
+                latitude: +latitude,
+                longitude: +longitude,
+                id: 56864849
+              },
+              viewport: {
+                ...state.viewport,
+                latitude: +latitude,
+                longitude: +longitude,
+                zoom: 18,
+                transitionInterpolator: experimental.viewportFlyToInterpolator,
+                transitionDuration: 3000,
+                transitionDelay: 1000
+              }
+            }))
+          }, 350)
+        )
+      })
+      .catch(console.error.bind(console))
+  }
   render() {
     const {
       viewport,
       currentUser,
-      locations,
+      myCar,
+      myLocation,
       popupInfo,
       currentTheme,
-      currentFilter,
       isMenuOpen
     } = this.state
     return (
@@ -118,19 +117,20 @@ class App extends PureComponent {
           mapStyle={`mapbox://styles/mapbox/${currentTheme}-v9`}
           mapboxApiAccessToken={TOKEN}
         >
-          {locations.map(this.renderCityMarker)}
+          {myCar ? this.renderCityMarker(myCar) : null}
+          {myLocation ? this.renderCityMarker(myLocation) : null}
           <LabelInfo info={popupInfo || {}} visible={!!popupInfo} />
         </MapGL>
         <MenuButton onClick={this.openMenu} isOpen={isMenuOpen} />
-        <Menu
+        <UserMenu
           userinfo={currentUser}
-          currentFilter={currentFilter}
           show={isMenuOpen}
-          onSelectFilter={this.onSelectFilter}
+          primaryAction={this.openPaymants}
+          secondaryAction={this.findMyCar}
         />
       </div>
     )
   }
 }
 
-export default App
+export default User

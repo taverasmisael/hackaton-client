@@ -19,7 +19,7 @@ const StyledButton = styled.button`
   top: 1.5rem;
   z-index: 200;
   svg {
-    fill: ${({ isOpen }) => (IsNightTime() && !isOpen ? '#f5f5f5' : '#323232')};
+    fill: #323232;
     height: var(--icon-size);
     line-height: 1;
     width: var(--icon-size);

@@ -12,6 +12,15 @@ export const LoadMarkers = async filter => {
   }
 }
 
+export const GetMyCar = async id => {
+  try {
+    const response = await get(`/car/${id}`)
+    return response.data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const FiltersCode = {
   ALL: 1,
   OUTDATED: 2,

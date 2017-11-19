@@ -95,6 +95,7 @@ class UserInfo extends PureComponent {
       <StyledUserInfo showPasswordForm={this.state.editingPassword} className="UserInfo">
         <h4 className="UserName">
           {info.name}
+          <br />
           <small>{info.cedula}</small>
         </h4>
         <small>

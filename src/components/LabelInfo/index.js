@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
+const MarkersColors = {
+  UPDATED: '#6cffc0',
+  OUTDATED: '#ff6060'
+}
+
 const StyledLabel = styled.div`
-  background: white;
-  border-radius: .27em .27em 0 0;
+  background: ${({ updated }) => (updated ? MarkersColors.UPDATED : MarkersColors.OUTDATED)};
+  border-radius: 0.27em 0.27em 0 0;
   bottom: ${({ active }) => (active ? 0 : '-100%')};
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12), 0 3px 4px rgba(0, 0, 0, 0.24);
   display: grid;
@@ -39,7 +44,7 @@ export default class LabelInfo extends PureComponent {
     } = this.props
 
     return (
-      <StyledLabel active={visible}>
+      <StyledLabel updated={active} active={visible}>
         <h3 className="label__name">
           {user_name}
           <br />
